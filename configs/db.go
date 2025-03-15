@@ -7,6 +7,7 @@ import (
 	"project-mngt-golang-graphql/graph/model"
 	"time"
 
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
@@ -72,6 +73,109 @@ func(db *DB) CreateProject(input *model.NewProject) (*model.Project , error) {
 		Description: 	input.Description,
 		Status: 		model.StatusNotStarted,	
 	}
+
+	return project , err
+}
+
+func (db *DB) CreateOwner(input *model.Owner) (*model.Owner , error){
+	collection := colHelper(db , "Owner")
+
+	ctx , cancel := context.WithTimeout(context.Background() , 10*time.Second)
+	defer cancel()
+
+	res , err := collection.InsertOne(ctx , input)
+
+	if err != nil {
+		return nil, err
+	}
+
+	owner := &model.Owner{
+		ID: 		res.InsertedID.(primitive.ObjectID).Hex() ,
+		Name: 		input.Name,
+		Email: 		input.Email,
+		Phone: 		input.Phone,		
+	}
+
+	return owner , err
+}
+
+
+func (db *DB) GetOwners() ([]*model.Owner , error){
+	collection := colHelper(db , "Owner")
+
+	ctx,cancel := context.WithTimeout(context.Background() , 10*time.Second)
+	var owners []*model.Owner
+	defer cancel()
+
+	res , err := collection.Find(ctx , bson.M{})
+
+	if err != nil {
+		return nil , err
+	}
+	defer res.Close(ctx)
+	
+	for res.Next(ctx) {
+		var singleOwner *model.Owner
+		if err = res.Decode(&singleOwner); err != nil {
+			log.Fatal(err)
+		}
+		owners = append(owners , singleOwner)
+	}
+
+	return owners , err
+}
+
+
+func (db *DB)  GetProject() ([]*model.Project , error){
+	collection := colHelper(db , "Project")
+
+	ctx , cancel := context.WithTimeout(context.Background(),10*time.Second)
+	var project []*model.Project
+	defer cancel()
+
+	res , err := collection.Find(ctx , bson.M{})
+	if err != nil {
+		return nil , err
+	}
+
+	defer res.Close(ctx)
+
+	for res.Next(ctx){
+		var singleproject *model.Project
+		if err = res.Decode(&singleproject); err != nil {
+			log.Fatal(err)
+		}
+		project = append(project , singleproject)
+	}
+
+	return project, nil
+}
+
+func (db *DB) SingleOwner(ID string) (*model.Owner , error){
+	collection := colHelper(db , "Owner")
+	
+	ctx,cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	var owner *model.Owner
+	
+	defer cancel()
+
+	objId,_ := primitive.ObjectIDFromHex(ID)
+
+	err := collection.FindOne(ctx , bson.M{"_id" : objId}).Decode(&owner)
+
+	return owner,err
+}
+
+func (db *DB) SingleProject(ID string) (*model.Project , error) {
+	collection := colHelper(db, "project")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+
+	var project *model.Project
+    defer cancel()
+
+	objId, _ := primitive.ObjectIDFromHex(ID)
+
+	err := collection.FindOne(ctx, bson.M{"_id": objId}).Decode(&project)
 
 	return project , err
 }
