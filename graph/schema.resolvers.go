@@ -10,14 +10,34 @@ import (
 	"project-mngt-golang-graphql/graph/model"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+// CreateProject is the resolver for the createProject field.
+func (r *mutationResolver) CreateProject(ctx context.Context, input *model.NewProject) (*model.Project, error) {
+	panic(fmt.Errorf("not implemented: CreateProject - createProject"))
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+// CreateOwner is the resolver for the createOwner field.
+func (r *mutationResolver) CreateOwner(ctx context.Context, input *model.NewOwner) (*model.Owner, error) {
+	panic(fmt.Errorf("not implemented: CreateOwner - createOwner"))
+}
+
+// Owners is the resolver for the owners field.
+func (r *queryResolver) Owners(ctx context.Context) ([]*model.Owner, error) {
+	panic(fmt.Errorf("not implemented: Owners - owners"))
+}
+
+// Projects is the resolver for the projects field.
+func (r *queryResolver) Projects(ctx context.Context) ([]*model.Project, error) {
+	panic(fmt.Errorf("not implemented: Projects - projects"))
+}
+
+// Owner is the resolver for the owner field.
+func (r *queryResolver) Owner(ctx context.Context, input *model.FetchOwner) (*model.Owner, error) {
+	panic(fmt.Errorf("not implemented: Owner - owner"))
+}
+
+// Project is the resolver for the project field.
+func (r *queryResolver) Project(ctx context.Context, input *model.FetchProject) (*model.Project, error) {
+	panic(fmt.Errorf("not implemented: Project - project"))
 }
 
 // Mutation returns MutationResolver implementation.
@@ -28,3 +48,18 @@ func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//    it when you're done.
+//  - You have helper methods in this file. Move them out to keep these resolver files clean.
+/*
+	func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
+	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+}
+func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
+	panic(fmt.Errorf("not implemented: Todos - todos"))
+}
+*/
