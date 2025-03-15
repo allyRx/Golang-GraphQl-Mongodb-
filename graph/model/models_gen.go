@@ -9,11 +9,11 @@ import (
 )
 
 type FetchOwner struct {
-	ID string `json:"id"`
+	ID string `json:"id" bson:"_id"`
 }
 
 type FetchProject struct {
-	ID string `json:"id"`
+	ID string `json:"id" bson: "_id"`
 }
 
 type Mutation struct {
@@ -33,7 +33,7 @@ type NewProject struct {
 }
 
 type Owner struct {
-	ID    string `json:"_id"`
+	ID    string `json:"_id"  bson:"_id"`
 	Name  string `json:"name"`
 	Email string `json:"email"`
 	Phone string `json:"phone"`
