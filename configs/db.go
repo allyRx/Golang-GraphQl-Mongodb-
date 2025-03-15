@@ -77,7 +77,7 @@ func(db *DB) CreateProject(input *model.NewProject) (*model.Project , error) {
 	return project , err
 }
 
-func (db *DB) CreateOwner(input *model.Owner) (*model.Owner , error){
+func (db *DB) CreateOwner(input *model.NewOwner) (*model.Owner , error){
 	collection := colHelper(db , "Owner")
 
 	ctx , cancel := context.WithTimeout(context.Background() , 10*time.Second)

@@ -6,38 +6,52 @@ package graph
 
 import (
 	"context"
-	"fmt"
+	"project-mngt-golang-graphql/configs"
 	"project-mngt-golang-graphql/graph/model"
 )
 
+var (
+	db = configs.ConnectDB()
+)
 // CreateProject is the resolver for the createProject field.
 func (r *mutationResolver) CreateProject(ctx context.Context, input *model.NewProject) (*model.Project, error) {
-	panic(fmt.Errorf("not implemented: CreateProject - createProject"))
+	project , err := db.CreateProject(input)
+
+	return project, err
 }
 
 // CreateOwner is the resolver for the createOwner field.
 func (r *mutationResolver) CreateOwner(ctx context.Context, input *model.NewOwner) (*model.Owner, error) {
-	panic(fmt.Errorf("not implemented: CreateOwner - createOwner"))
+	owner , err := db.CreateOwner(input)
+
+	return owner , err
 }
 
 // Owners is the resolver for the owners field.
 func (r *queryResolver) Owners(ctx context.Context) ([]*model.Owner, error) {
-	panic(fmt.Errorf("not implemented: Owners - owners"))
+	owners , err := db.GetOwners()
+	return owners , err
 }
 
 // Projects is the resolver for the projects field.
 func (r *queryResolver) Projects(ctx context.Context) ([]*model.Project, error) {
-	panic(fmt.Errorf("not implemented: Projects - projects"))
+	projects , err := db.GetProject()
+
+	return projects, err
 }
 
 // Owner is the resolver for the owner field.
 func (r *queryResolver) Owner(ctx context.Context, input *model.FetchOwner) (*model.Owner, error) {
-	panic(fmt.Errorf("not implemented: Owner - owner"))
+	singleOwner , err := db.SingleOwner(input.ID)
+
+	return singleOwner, err
 }
 
 // Project is the resolver for the project field.
 func (r *queryResolver) Project(ctx context.Context, input *model.FetchProject) (*model.Project, error) {
-	panic(fmt.Errorf("not implemented: Project - project"))
+	singleProject , err := db.SingleProject(input.ID)
+
+	return singleProject, err
 }
 
 // Mutation returns MutationResolver implementation.
