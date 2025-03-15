@@ -13,7 +13,7 @@ type FetchOwner struct {
 }
 
 type FetchProject struct {
-	ID string `json:"id" bson: "_id"`
+	ID string `json:"id" bson:"_id"`
 }
 
 type Mutation struct {
@@ -40,7 +40,7 @@ type Owner struct {
 }
 
 type Project struct {
-	ID          string `json:"_id"`
+	ID          string `json:"_id" bson:"_id"`
 	Owner       string `json:"Owner"`
 	Name        string `json:"name"`
 	Description string `json:"description"`
